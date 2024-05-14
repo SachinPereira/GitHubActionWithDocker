@@ -1,0 +1,39 @@
+name: Black Duck Docker Inspector Scan
+
+on: workflow_dispatch
+
+jobs:
+  build_and_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install curl
+        run: |
+          sudo apt update
+          sudo apt install -y curl
+
+      #- name: Build Docker image
+       # run: |
+        #  docker build -t my-docker-image .
+        #working-directory: .  # Specify the directory containing Dockerfile and index.html
+
+      - name: Download Black Duck Docker Inspector script
+        run: |
+          chmod +x ./.github/workflows/blackduck-docker-inspector.sh
+
+      - name: Scan Docker Image with Black Duck
+        run: |
+          ./.github/workflows/blackduck-docker-inspector.sh \
+            --docker-image my-docker-image \
+            --blackduck-url https://your-blackduck-instance-url \
+            --blackduck-api-token "${{ secrets.BLACKDUCK_API_TOKEN }}" \
+            --output json > scan_results.json
+
+      - name: Upload scan results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: scan_results.json
