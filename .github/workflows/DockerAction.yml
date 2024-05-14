@@ -15,10 +15,10 @@ jobs:
           sudo apt update
           sudo apt install -y curl
 
-      #- name: Build Docker image
-       # run: |
-        #  docker build -t my-docker-image .
-        #working-directory: .  # Specify the directory containing Dockerfile and index.html
+      - name: Build Docker image
+        run: |
+          docker build -t my-docker-image .
+        working-directory: .  # Specify the directory containing Dockerfile and index.html
 
       - name: Download Black Duck Docker Inspector script
         run: |
