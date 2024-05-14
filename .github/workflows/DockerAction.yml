@@ -28,7 +28,7 @@ jobs:
         run: |
           ./.github/workflows/blackduck-docker-inspector.sh \
             --docker-image my-docker-image \
-            --blackduck-url https://your-blackduck-instance-url \
+            --blackduck-url "${{ secrets.BLACKDUCK_API }}" \
             --blackduck-api-token "${{ secrets.BLACKDUCK_API_TOKEN }}" \
             --output json > scan_results.json
 
