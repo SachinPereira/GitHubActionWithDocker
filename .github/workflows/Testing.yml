@@ -2,7 +2,7 @@ name: Example Workflow Docker
 on: workflow_dispatch
 jobs:
   security:
-    runs-on: gha-enterprise-basic
+    runs-on: ubuntu-latest
     container: docker://synopsys/blackduck-docker-inspector:latest
     steps:
     - uses: actions/checkout@v4
