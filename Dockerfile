@@ -11,7 +11,7 @@ RUN apt-get update && \
     update-ca-certificates
 
 # Download and install Synopsys Detect
-RUN curl -sSL detect.synopsys.com/detect9.ps1 | sh
+RUN curl -sSL https://detect.synopsys.com/detect9.ps1 | sh
 
 # Entry point script to run Synopsys Detect
 COPY entrypoint.sh /entrypoint.sh
