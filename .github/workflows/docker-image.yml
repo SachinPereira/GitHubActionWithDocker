@@ -1,0 +1,46 @@
+name: Final
+
+on:
+  workflow_dispatch:
+    inputs:
+      docker_image:
+        description: 'Docker image to scan'
+        required: true
+      blackduck_url:
+        description: 'URL of Black Duck server'
+        required: true
+
+jobs:
+  scan_docker_image:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install curl
+        run: |
+          sudo apt update
+          sudo apt install -y curl
+
+      - name: Run Black Duck Docker Inspector
+        run: |
+          # Set necessary environment variables using secrets
+          export BLACKDUCK_PROXY_HOST="${{ secrets.BLACKDUCK_PROXY_HOST }}"
+          export BLACKDUCK_PROXY_PORT="${{ secrets.BLACKDUCK_PROXY_PORT }}"
+          export BLACKDUCK_PROXY_USERNAME="${{ secrets.BLACKDUCK_PROXY_USERNAME }}"
+          export BLACKDUCK_PROXY_PASSWORD="${{ secrets.BLACKDUCK_PROXY_PASSWORD }}"
+          
+          # Execute the Black Duck Docker Inspector script
+          chmod +x ./.github/workflows/blackduck-docker-inspector.sh
+          ./.github/workflows/blackduck-docker-inspector.sh \
+            --docker-image ${{ github.event.inputs.docker_image }} \
+            --blackduck-url "${{ secrets.BLACKDUCK_API }}" \
+            --blackduck-api-token "${{ secrets.BLACKDUCK_API_TOKEN }}" \
+            --output json > scan_results.json
+
+      - name: Upload scan results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: scan_results.json
