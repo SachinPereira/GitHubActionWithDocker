@@ -27,6 +27,6 @@ jobs:
           docker run \
             --env-file .env \
             my-docker-image \
-            java -jar synopsys-detect-7.9.0.jar \
+            java -jar synopsys-detect-${DETECT_VERSION}.jar \
             --blackduck.url="${BLACKDUCK_URL}" \
             --blackduck.api.token="${BLACKDUCK_API_TOKEN}"
