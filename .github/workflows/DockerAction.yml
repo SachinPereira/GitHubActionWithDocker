@@ -1,4 +1,4 @@
-name: Black Duck Docker Inspector Scan
+name: Docker Inspector Scan
 
 on: workflow_dispatch
 
@@ -26,6 +26,7 @@ jobs:
 
       - name: Scan Docker Image with Black Duck
         run: |
+          set -x
           ./.github/workflows/blackduck-docker-inspector.sh \
             --docker-image my-docker-image \
             --blackduck-url "${{ secrets.BLACKDUCK_API }}" \
