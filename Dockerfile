@@ -10,9 +10,11 @@ RUN apt-get update && \
     apt-get install -y curl ca-certificates && \
     update-ca-certificates
 
-# Download and install Synopsys Detect
-RUN mkdir /synopsys-detect \
-    && curl -sSL -o https://detect.synopsys.com/detect9.ps1 https://detect.synopsys.com/detect9.ps1
+# Download Synopsys Detect script
+RUN curl -sSL -o /synopsys-detect/detect9.ps1 https://detect.synopsys.com/detect9.ps1
+
+# Optionally, you can set execute permissions on the downloaded script
+# RUN chmod +x /synopsys-detect/detect9.ps1
 
 
 # Entry point script to run Synopsys Detect
