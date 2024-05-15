@@ -18,7 +18,7 @@ jobs:
       with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           detect-version: 7.9.0
-          blackduck-url: ${{ secrets.BLACKDUCK_URL }}
+          blackduck-url: ${{ secrets.BLACKDUCK_API }}
           blackduck-api-token: ${{ secrets.BLACKDUCK_API_TOKEN }}    
     - name: Pass Output to Next Step
       run: echo "${{ toJson(steps.run-synopsys-detect.outputs)}}" > output.json
