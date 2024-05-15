@@ -1,32 +1,31 @@
 name: main
-on: workflow_dispatch
+on:
+  workflow_dispatch
+
 jobs:
   blackDuckConnect:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Set up Java 11
         uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'adopt'
-      
+
       - name: Build Docker image
         run: |
           docker build -t my-docker-image .
-      
+
       - name: Pass Secrets to Docker Container
         run: |
           echo "BLACKDUCK_URL=${{ secrets.BLACKDUCK_URL }}" > .env
           echo "BLACKDUCK_API_TOKEN=${{ secrets.BLACKDUCK_API_TOKEN }}" >> .env
-      
+
       - name: Run Synopsys Detect via Docker
         run: |
           docker run \
             --env-file .env \
-            my-docker-image \
-            java -jar synopsys-detect-${DETECT_VERSION}.jar \
-            --blackduck.url="${BLACKDUCK_URL}" \
-            --blackduck.api.token="${BLACKDUCK_API_TOKEN}"
+            my-docker-image
