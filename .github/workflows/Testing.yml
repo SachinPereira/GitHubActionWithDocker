@@ -12,11 +12,13 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Run Synopsys Detect
-      uses:  docker://synopsys/blackduck-docker-inspector:latest
-      with:
-          BLACKDUCK_URL: ${{ secrets.BLACKDUCK_URL }}
-          BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
-          OUTPUT_FILE: output.json
+      run: |
+          docker run --rm \
+            -e BLACKDUCK_URL=${{ secrets.BLACKDUCK_URL }} \
+            -e BLACKDUCK_API_TOKEN=${{ secrets.BLACKDUCK_API_TOKEN }} \
+            -e OUTPUT_FILE=output.json \
+            -e NODE_EXTRA_CA_CERTS=${{ secrets.LOCAL_CA_CERT_PATH }} \
+            ${{ secrets.CUSTOM_DOCKER_IMAGE_URI }}
          
       env:
         NODE_EXTRA_CA_CERTS: ${{ secrets.LOCAL_CA_CERT_PATH }}
