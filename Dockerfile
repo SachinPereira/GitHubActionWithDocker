@@ -1,8 +1,8 @@
 FROM adoptopenjdk:11-jdk-hotspot
 
 # Set environment variables
-ENV BLACKDUCK_URL=<your_blackduck_url>
-ENV BLACKDUCK_API_TOKEN=<your_blackduck_api_token>
+ENV BLACKDUCK_URL=BLACKDUCK_URL
+ENV BLACKDUCK_API_TOKEN=BLACKDUCK_API_TOKEN
 ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
 
 # Install necessary dependencies
