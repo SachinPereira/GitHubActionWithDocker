@@ -1,0 +1,25 @@
+name: Example Workflow
+on: workflow_dispatch
+jobs:
+  blackDuckConnect:
+    runs-on: gha-enterprise-basic
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Java 11
+      uses: actions/setup-java@v4 
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    - name: Run Synopsys Detect
+      id: run-synopsys-detect
+      uses: synopsys-sig/detect-action@v0.3.0
+      env:
+        NODE_EXTRA_CA_CERTS: ${{ secrets.LOCAL_CA_CERT_PATH }}
+      with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          detect-version: 7.9.0
+          blackduck-url: ${{ secrets.BLACKDUCK_URL }}
+          blackduck-api-token: ${{ secrets.BLACKDUCK_API_TOKEN }}    
+    - name: Pass Output to Next Step
+      run: echo "${{ toJson(steps.run-synopsys-detect.outputs)}}" > output.json
+
