@@ -31,11 +31,12 @@ jobs:
             --docker-image my-docker-image \
             --blackduck-url "${{ secrets.BLACKDUCK_API }}" \
             --blackduck-api-token "${{ secrets.BLACKDUCK_API_TOKEN }}" \
-            --output json > scan_results.json
+            --output json > scan_results.json  2>&1
 
         env:
            BLACKDUCK_API: ${{ secrets.BLACKDUCK_API }}
            BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
+           DEBUG: true
 
       - name: Upload scan results as artifact
         uses: actions/upload-artifact@v4
