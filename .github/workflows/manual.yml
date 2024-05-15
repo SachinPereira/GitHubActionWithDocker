@@ -2,7 +2,7 @@ name: Example Workflow
 on: workflow_dispatch
 jobs:
   blackDuckConnect:
-    runs-on: gha-enterprise-basic
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Set up Java 11
