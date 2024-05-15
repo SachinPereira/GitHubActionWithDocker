@@ -11,7 +11,10 @@ RUN apt-get update && \
     update-ca-certificates
 
 # Download Synopsys Detect script
+RUN mkdir -p /synopsys-detect
+RUN ls -l /synopsys-detect  # Debugging: List contents of directory
 RUN curl -sSL -o /synopsys-detect/detect9.sh https://detect.synopsys.com/detect9.sh
+RUN ls -l /synopsys-detect  # Debugging: List contents of directory after download
 
 # Optionally, you can set execute permissions on the downloaded script
 # RUN chmod +x /synopsys-detect/detect9.ps1
