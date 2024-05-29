@@ -1,0 +1,33 @@
+name: Black Duck Docker Inspector Workflow latest
+on: workflow_dispatch
+
+jobs:
+  blackDuckConnect:
+    runs-on: gha-enterprise-basic
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+    
+    - name: Build Docker image
+      uses: ./.github/actions/blackduck-scan
+      env:
+        BLACKDUCK_URL: ${{ secrets.BLACKDUCK_URL }}
+        BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
+          
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: blackduck-output
+        path: output.json      
+
+
