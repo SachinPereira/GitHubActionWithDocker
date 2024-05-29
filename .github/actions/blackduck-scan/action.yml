@@ -1,0 +1,23 @@
+name: "Black Duck Detect Scan"
+description: "Runs a Black Duck Detect scan inside a Docker container"
+inputs:
+  blackduck_url:
+    description: "Black Duck server URL"
+    required: true
+  blackduck_api_token:
+    description: "API token for Black Duck"
+    required: true
+  project_name:
+    description: "Project name for the scan"
+    required: true
+  project_version:
+    description: "Project version for the scan"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.blackduck_url }}
+    - ${{ inputs.blackduck_api_token }}
+    - ${{ inputs.project_name }}
+    - ${{ inputs.project_version }}
