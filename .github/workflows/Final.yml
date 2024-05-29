@@ -14,8 +14,8 @@ jobs:
         distribution: 'adopt'
         java-version: '11'
 
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+   # - name: Log in to Docker Hub
+    #  run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
     
     - name: Build Docker image
       uses: ./.github/actions/blackduck-scan
