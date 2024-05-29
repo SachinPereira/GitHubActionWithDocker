@@ -19,7 +19,6 @@ jobs:
     
     - name: Build Docker image
       uses: |
-        actions/setup-java@v4
         ./.github/actions/blackduck-scan
       env:
         BLACKDUCK_URL: ${{ secrets.BLACKDUCK_URL }}
