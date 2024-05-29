@@ -18,7 +18,7 @@ jobs:
     #  run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
     
     - name: Build Docker image
-      uses: |
+      uses: 
         ./.github/actions/blackduck-scan
       env:
         BLACKDUCK_URL: ${{ secrets.BLACKDUCK_URL }}
