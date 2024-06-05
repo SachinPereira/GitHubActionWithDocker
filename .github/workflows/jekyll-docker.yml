@@ -1,0 +1,51 @@
+name: Mirror Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_url:
+        description: 'Git URL of the repository to mirror'
+        required: true
+        default: 'https://github.com/numpy/numpy.git'
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+    - name: Clone the source repository
+      run: |
+        git clone --mirror ${{ github.event.inputs.git_url }} source-repo
+
+    - name: Create new repository via GitHub CLI
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
+        OWNER=${{ github.repository_owner }}
+        gh auth login --with-token <<< $GITHUB_TOKEN
+        gh repo create $OWNER/$REPO_NAME --public --description "Mirror of ${{ github.event.inputs.git_url }}"
+
+    - name: Push to new repository
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
+        cd source-repo
+        git push --mirror https://$GITHUB_TOKEN@github.com/${{ github.repository_owner }}/$REPO_NAME.git
+
+    - name: Update repository description
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
+        gh auth login --with-token <<< $GITHUB_TOKEN
+        gh repo edit ${{ github.repository_owner }}/$REPO_NAME --description "Mirror of ${{ github.event.inputs.git_url }}"
