@@ -40,7 +40,7 @@ jobs:
       run: |
         REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
         cd source-repo
-        git push --mirror https://$GITHUB_TOKEN@github.com/${{ github.repository_owner }}/$REPO_NAME.git
+        git push --mirror https://github.com/${{ github.repository_owner }}/$REPO_NAME.git
 
     - name: Update repository description
       env:
