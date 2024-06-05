@@ -22,8 +22,7 @@ jobs:
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
     - name: Clone the source repository
-      run: |
-        git clone --mirror ${{ github.event.inputs.git_url }} source-repo
+      run: git clone --mirror ${{ github.event.inputs.git_url }} source-repo
 
     - name: Create new repository via GitHub CLI
       env:
@@ -31,12 +30,10 @@ jobs:
       run: |
         REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
         OWNER=${{ github.repository_owner }}
-        gh auth login --with-token <<< $GITHUB_TOKEN
+        echo $GITHUB_TOKEN | gh auth login --with-token
         gh repo create $OWNER/$REPO_NAME --public --description "Mirror of ${{ github.event.inputs.git_url }}"
 
     - name: Push to new repository
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
         cd source-repo
@@ -47,5 +44,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
-        gh auth login --with-token <<< $GITHUB_TOKEN
-        gh repo edit ${{ github.repository_owner }}/$REPO_NAME --description "Mirror of ${{ github.event.inputs.git_url }}"
+        echo $GITHUB_TOKEN | gh auth login --with-token
+        gh repo edit $OWNER/$REPO_NAME --description "Mirror of ${{ github.event.inputs.git_url }}"
