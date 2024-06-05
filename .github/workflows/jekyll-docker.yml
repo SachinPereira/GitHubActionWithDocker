@@ -29,13 +29,18 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gh
 
+    - name: Authenticate with GitHub CLI
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo $GITHUB_TOKEN | gh auth login --with-token
+
     - name: Create new repository via GitHub CLI
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
         OWNER=${{ github.repository_owner }}
-        echo $GITHUB_TOKEN | gh auth login --with-token
         gh repo create $OWNER/$REPO_NAME --public --description "Mirror of ${{ github.event.inputs.git_url }}"
 
     - name: Push to new repository
@@ -49,5 +54,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
-        echo $GITHUB_TOKEN | gh auth login --with-token
         gh repo edit $OWNER/$REPO_NAME --description "Mirror of ${{ github.event.inputs.git_url }}"
