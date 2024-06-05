@@ -24,3 +24,11 @@ jobs:
     - name: Clone the source repository
       run: |
         git clone --mirror ${{ github.event.inputs.git_url }} source-repo
+
+    - name: Create new repository via GitHub CLI
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        REPO_NAME=$(basename -s .git ${{ github.event.inputs.git_url }})
+        OWNER=${{ github.repository_owner }}
+        gh repo create $OWNER/$REPO_NAME --public --description "Mirror of ${{ github.event.inputs.git_url }}"    
