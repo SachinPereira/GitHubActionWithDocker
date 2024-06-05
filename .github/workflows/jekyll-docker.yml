@@ -24,11 +24,6 @@ jobs:
     - name: Clone the source repository
       run: git clone --mirror ${{ github.event.inputs.git_url }} source-repo
 
-    - name: Install GitHub CLI
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y gh
-
     - name: Authenticate with GitHub CLI
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
